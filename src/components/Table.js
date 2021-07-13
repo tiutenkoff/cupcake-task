@@ -1,8 +1,11 @@
-import { useContext } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { tableContext } from '../context/tableContext'
+import { RUB, USD, EUR, CUPCAKE } from '../types'
 
 export const Table = ({ CurrencyOne, CurrencyTwo }) => {
-    const { createTable } = useContext(tableContext)
+    const { createTable, lessCheck } = useContext(tableContext)
+
+
     if (!(CurrencyOne && CurrencyTwo)) {
         return (
             <tr>
@@ -14,11 +17,18 @@ export const Table = ({ CurrencyOne, CurrencyTwo }) => {
         )
     }
     return (
-        <tr>
+        <tr >
             <th>{`${CurrencyOne}/${CurrencyTwo}`}</th>
             {
-                createTable(CurrencyOne, CurrencyTwo).map((td, i) => {
-                    return <td key={i}>{td.toFixed(3)}</td>
+                createTable(CurrencyOne, CurrencyTwo).map((row, i) => {
+
+                    
+
+                    return (
+                    row === lessCheck()
+                        ? <td className="least" key={i}>{row.toFixed(3)}</td>
+                        : <td key={i}>{row.toFixed(3)}</td>
+                    )
                 })
             }
         </tr>

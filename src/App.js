@@ -14,7 +14,7 @@ function App() {
   const [loading, setLoading] = useState(true)
 
   const valveOptions = [
-    ['',''],
+    ['', ''],
     [RUB, CUPCAKE],
     [USD, CUPCAKE],
     [EUR, CUPCAKE],
@@ -25,19 +25,53 @@ function App() {
 
   useEffect(() => {
     setLoading(true)
+    primaryLoad()
     subscribe()
   }, [])
 
   function getRandomNumber(min, max) {
     return new Promise(resolve => resolve(Math.random() * (max - min) + min));
   }
-    
-  async function subscribe() {
+
+  
+  
+
+  function lessCheck() {
+    return Math.min(...createTable(RUB, CUPCAKE),
+    ...createTable(USD, CUPCAKE),
+    ...createTable(EUR, CUPCAKE),
+    ...createTable(RUB, USD),
+    ...createTable(RUB, EUR),
+    ...createTable(EUR, USD),
+    )
+  }
+
+  async function primaryLoad() {
     try {
       const [getFirst, getSecond, getThird, randCupcake] = await Promise.all([
         axios.get('/first'),
         axios.get('/second'),
         axios.get('/third'),
+        getRandomNumber(50, 100)
+      ])
+
+      setLoading(false)
+      setFirst([Object.keys(getFirst.data.rates), Object.values(getFirst.data.rates)])
+      setSecond([Object.keys(getSecond.data.rates), Object.values(getSecond.data.rates)])
+      setThird([Object.keys(getThird.data.rates), Object.values(getThird.data.rates)])
+      setCupcake(randCupcake)
+      
+    } catch (error) {
+      console.error('Не удалось получить данные с сервера', error)
+    }
+  }
+
+  async function subscribe() {
+    try {
+      const [getFirst, getSecond, getThird, randCupcake] = await Promise.all([
+        axios.get('/first/poll'),
+        axios.get('/second/poll'),
+        axios.get('/third/poll'),
         getRandomNumber(50, 100)
       ])
 
@@ -57,7 +91,6 @@ function App() {
   }
 
   function createTable(val1, val2){
-
     let firstOne = 0,
       firstTwo = 0
     let secondOne = 0,
@@ -108,7 +141,7 @@ function App() {
         }
       }
     }
-
+    
     if (thirdTwo == 0) {
       thirdTwo = cupcake
     }
@@ -120,10 +153,11 @@ function App() {
     ]
   }  
   
+  
   return (
     <tableContext.Provider value={{
-      createTable, 
-      }}>
+      createTable, lessCheck
+    }}>
         <div className="wrapper">
         { loading
           ? <Loader />
@@ -133,7 +167,6 @@ function App() {
                   valveOptions.map((row, index) => {
                     return <Table key={index} CurrencyOne={row[0]} CurrencyTwo={row[1]} />
                   })
-                  
                 }
               </tbody>
             </table>
