@@ -33,18 +33,6 @@ function App() {
     return new Promise(resolve => resolve(Math.random() * (max - min) + min));
   }
 
-  
-  
-
-  function lessCheck() {
-    return Math.min(...createTable(RUB, CUPCAKE),
-    ...createTable(USD, CUPCAKE),
-    ...createTable(EUR, CUPCAKE),
-    ...createTable(RUB, USD),
-    ...createTable(RUB, EUR),
-    ...createTable(EUR, USD),
-    )
-  }
 
   async function primaryLoad() {
     try {
@@ -110,7 +98,7 @@ function App() {
       }
     }
 
-    if (firstTwo == 0) {
+    if (firstTwo === 0) {
       firstTwo = cupcake
     }
 
@@ -126,7 +114,7 @@ function App() {
       }
     }
 
-    if (secondTwo == 0) {
+    if (secondTwo === 0) {
       secondTwo = cupcake
     }
 
@@ -141,8 +129,8 @@ function App() {
         }
       }
     }
-    
-    if (thirdTwo == 0) {
+ 
+    if (thirdTwo === 0) {
       thirdTwo = cupcake
     }
 
@@ -156,7 +144,7 @@ function App() {
   
   return (
     <tableContext.Provider value={{
-      createTable, lessCheck
+      createTable
     }}>
         <div className="wrapper">
         { loading

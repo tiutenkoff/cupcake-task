@@ -13,7 +13,7 @@ code {
 
 .wrapper {
   margin: 0 auto;
-  max-width: 900px;
+  max-width: 1000px;
   padding: 50px;
 }
 
@@ -29,16 +29,26 @@ th {
   width: 200px;
   padding: 25px 30px;
 }
+
+tr:hover {
+  .bsize {
+    transition: font-size 0.2s ease-in-out;
+    font-size: 26px;
+  }
+}
+
 .least {
   background: rgb(96, 150, 221);
   color: #fff;
 }
+
 table,
 th,
 tr,
 td {
   border: 3px solid rgb(107, 104, 104);
   border-color: rgb(107, 104, 104);
+  transition: font-size 0.2s ease-in-out;
 }
 
 .loader {
